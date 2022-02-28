@@ -19,16 +19,7 @@ function Home() {
 
   // }, [])
 
-  const { logOut, user } = useUserAuth();
-  const navigate = useNavigate();
-  const handleLogout = async () => {
-    try {
-      await logOut();
-      navigate("/login");
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+ 
 
   return (
     <Container>

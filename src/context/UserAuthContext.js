@@ -13,7 +13,7 @@ import { auth } from "../firebase";
 const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
-  // const [currentuser, setUser] = useState({});
+  // const [user, setUser] = useState({});
 
   function logIn(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
@@ -32,21 +32,12 @@ export function UserAuthContextProvider({ children }) {
     const facebookAuthProvider = new FacebookAuthProvider();
     return signInWithPopup(auth, facebookAuthProvider);
   }
-// no use
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
-  //     console.log("Auth", currentuser);
-  //     setUser(currentuser);
-  //     return unsubscribe;
-  //   });
-
-  //     return currentuser;
-  // }, []);
-
+  
 
    function useAuth() {
+    
     const [currentUser, setCurrentUser] = useState();
-  
+    
     useEffect(() => {
       const unsub = onAuthStateChanged(auth, user => setCurrentUser(user));
       return unsub;

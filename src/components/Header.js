@@ -1,19 +1,17 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-
-import { useState, useRef } from "react";
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useUserAuth } from "../context/UserAuthContext";
 
 
-//kk
+
 
 
 
 
 
 function Header() {
-    
+
 
     const [input, setInput] = useState("");
     const [barOpened, setBarOpened] = useState(false);
@@ -24,13 +22,48 @@ function Header() {
     const [sports, setSports] = useState(false);
     const [menuItem, setMenuItem] = useState(false);
     const navigate = useNavigate();
-    // const useAuth = useUserAuth();
+    const [profile, setProfile] = useState(false);
+    // const [loading, setLoading] = useState(false);
 
-    // const { user } = useUserAuth();
-    
-    // if (user) {
-    //     console.log("Check user in Private: ", user);
+
+    const loading = useLocation();
+    const { logOut, useAuth } = useUserAuth();
+    const currentUser = useAuth();
+    // // console.log(CurrentUser());
+    // var login = "Login";
+    // useEffect(() => {
+
+    //     currentUser && console.log("user exist");
+
+
+    //     !currentUser && console.log("user not exist");
+
+    // }, [loading])
+    // console.log(profile);
+
+
     // }
+    // console.log(CurrentUser);
+
+
+
+
+    const handleLogout = async () => {
+        // setLoading(true);
+        if (!currentUser) {
+            alert("user not exist");
+        }
+        else {
+            try {
+                await logOut();
+                navigate("/");
+                alert("Logout user");
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+        // setLoading(true);
+    };
 
     const onFormSubmit = e => {
         // When form submited, clear input, close the searchbar and do something with input
@@ -252,16 +285,17 @@ function Header() {
                     SUBSCRIBE
                 </ButtonDiv>
 
-                {/* !useAuth() &&  */}
+                {!currentUser &&
+                    <ButtonLogin
+                        // disabled = {loading}
+                        onClick={() => {
+                            // When form clicked, set state of baropened to true and focus the input
+                            navigate("login");
+                        }}
+                    >
+                        Login</ButtonLogin>}
+                {  currentUser && <ButtonLogout   onClick={handleLogout} >LogOut</ButtonLogout>}
 
-                <p
-
-                    onClick={() => {
-                        // When form clicked, set state of baropened to true and focus the input
-                        navigate("login");
-                    }}
-
-                >Login</p>
             </RightMenu>
         </Nav>
     )
@@ -621,30 +655,11 @@ const RightMenu = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 200px;
+    width: 250px;
     padding: 0 20px;
     cursor: pointer;
-    p{
-        // style={{ color: 'rgba(225, 225, 225 , 0.8)' }}
-        &:hover{
-            color: blue;
-        }
-        .Link{
-            text-decoration: none;
-            
-            color: rgba(225, 225, 225 , 0.8);
-            
-        }
-        padding-right: 30px;
-        @media  screen and (max-width: 480px) {
-            display: none;
-         
-        }
-        @media  screen and (max-width: 768px) {
-            padding-right: 8px;
-          
-        }
-    }
+    
+    
     @media  screen and (max-width: 480px) {
         padding: 0 10px;
         width: 100px;
@@ -652,6 +667,40 @@ const RightMenu = styled.div`
     
    
 
+`
+const ButtonLogout = styled.button`
+    background-color: rgb(168, 166, 39);
+    border-radius: 5px;
+    border: none;
+    color: white;
+    padding: 8px 27px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12.5px;
+    margin: 4px 20px 4px 0;
+    font-weight: 900;
+    cursor: pointer;
+ 
+
+`
+const ButtonLogin = styled.button`
+   
+    background-color: rgb(168, 166, 39);
+    border-radius: 5px;
+    border: none;
+    color: white;
+    padding: 8px 27px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12.5px;
+    margin: 4px 20px 4px 0;
+    font-weight: 900;
+    cursor: pointer;
+    
+
+    
 `
 const SearchBar = styled.div`
     box-sizing: border-box;
@@ -675,7 +724,7 @@ const ButtonDiv = styled.button`
       border-radius: 5px;
       border: none;
       color: white;
-      padding: 5px 12px;
+      padding: 8px 12px;
       text-align: center;
       text-decoration: none;
       display: inline-block;

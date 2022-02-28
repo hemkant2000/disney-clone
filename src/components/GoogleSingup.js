@@ -27,7 +27,8 @@ function GoogleSingup() {
     setError("");
     try {
       await signUp(email, password);
-      navigate("/login");
+      navigate("/");
+      alert("singup completed");
     } catch (err) {
       setError(err.message);
     }
@@ -38,7 +39,8 @@ function GoogleSingup() {
     e.preventDefault();
     try {
       await googleSignIn();
-      navigate("/login");
+      navigate("/");
+      alert("singup completed");
     } catch (error) {
       console.log(error.message);
     }
@@ -48,7 +50,8 @@ function GoogleSingup() {
     e.preventDefault();
     try {
       await facebookSignIn();
-      navigate("/login");
+      navigate("/");
+      alert("singup completed");
     } catch (error) {
       console.log(error.message);
     }
@@ -66,7 +69,7 @@ function GoogleSingup() {
     <MainContainer>
       <WelcomeText>Sing up</WelcomeText>
       {error && <Alert variant="danger">{error}</Alert>}
-      <InputContainer onSubmit={handleSubmit}>
+      <InputContainer>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Control
@@ -173,7 +176,7 @@ const WelcomeText = styled.h2`
   margin: 1rem 0 2rem 0;
 `;
 
-const InputContainer = styled.form`
+const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;

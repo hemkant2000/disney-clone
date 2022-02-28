@@ -22,26 +22,31 @@ function GoogleLogin(props) {
   const [error, setError] = useState("");
   const { logIn, googleSignIn , facebookSignIn} = useUserAuth();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const box = useRef(null);
   useOutsideAlerter(box);
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     setError("");
     try {
       await logIn(email, password);
-      navigate("/", { replace: true });
+      navigate("/", {state: loading});
+      alert("Login completed");
     } catch (err) {
       setError(err.message);
     }
   };
 
   const handleGoogleSignIn = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
       await googleSignIn();
-      navigate("/");
+      navigate("/", {state: loading});
+      alert("Login completed");
     } catch (error) {
       console.log(error.message);
     }
@@ -51,7 +56,8 @@ function GoogleLogin(props) {
     e.preventDefault();
     try {
       await facebookSignIn();
-      navigate("/", { replace: true });
+      navigate("/");
+      alert("Login completed");
     } catch (error) {
       console.log(error.message);
     }
@@ -72,7 +78,7 @@ function GoogleLogin(props) {
       {props.children}
       <WelcomeText>Login</WelcomeText>
       {error && <Alert variant="danger">{error}</Alert>}
-      <InputContainer onSubmit={handleSubmit}>
+      <InputContainer >
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Control
@@ -180,7 +186,7 @@ const WelcomeText = styled.h2`
 `;
 
 
-const InputContainer = styled.form`
+const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;

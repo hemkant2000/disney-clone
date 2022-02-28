@@ -29,8 +29,9 @@ function App() {
 
     <Router>
       <div className="App">
+      <UserAuthContextProvider>
         <Header />
-        <UserAuthContextProvider>
+        
           <Routes>
 
             <Route path="/" element={<Home />}>
@@ -48,8 +49,9 @@ function App() {
             {/* <Route path="log" element={<LoginMain />} /> */}
 
           </Routes>
-        </UserAuthContextProvider>
+       
         <Footer />
+        </UserAuthContextProvider>
       </div>
     </ Router >
 
